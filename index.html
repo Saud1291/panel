@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد أكواد التفعيل - Programmer Saud</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* إضافة أنماط خاصة بلوحة التحكم */
+        .admin-container {
+            margin-top: 20px;
+        }
+        
+        .main-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .main-tab {
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .main-tab.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .main-section {
+            display: none;
+        }
+        
+        .main-section.active {
+            display: block;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            margin-left: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .tab.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* تحسين تنسيق الجدول */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0;
+            min-width: 700px;
+        }
+        
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: right;
+            white-space: nowrap;
+        }
+        
+        td {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tbody tr:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .status-active {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .status-revoked {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .revoke-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .login-section {
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        
+        .dashboard-section {
+            display: none;
+        }
+        
+        .code-search {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .log-entry {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border-right: 4px solid #ddd;
+        }
+        
+        .log-entry.success {
+            border-right-color: #4CAF50;
+        }
+        
+        .log-entry.error {
+            border-right-color: #e74c3c;
+        }
+        
+        .log-entry.action {
+            border-right-color: #2196F3;
+        }
+        
+        .log-time {
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .log-device {
+            font-weight: bold;
+        }
+        
+        .log-action {
+            margin-top: 5px;
+        }
+        
+        /* تحسينات للجوال */
+        @media screen and (max-width: 768px) {
+            .main-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .main-tab {
+                margin-bottom: 10px;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .admin-tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                margin-bottom: 5px;
+                width: 100%;
+                text-align: center;
+            }
+            
+            td, th {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>نظام أكواد التفعيل</h1>
+                <p class="subtitle">Programmer Saud</p>
+            </div>
+            
+            <!-- التبويبات الرئيسية للتنقل بين المولد ولوحة التحكم -->
+            <div class="main-tabs">
+                <div class="main-tab active" data-section="generator">توليد الأكواد</div>
+                <div class="main-tab" data-section="admin">لوحة التحكم</div>
+            </div>
+            
+            <!-- قسم توليد الأكواد -->
+            <div id="generatorSection" class="main-section active">
+                <div class="input-group">
+                    <label for="deviceId">أدخل معرف الجهاز:</label>
+                    <input type="text" id="deviceId" placeholder="أدخل معرف الجهاز..." autocomplete="off">
+                </div>
+                
+                <div class="input-group">
+                    <label for="expiryTime">مدة صلاحية الكود:</label>
+                    <select id="expiryTime" class="select-input">
+                        <option value="1">يوم واحد</option>
+                        <option value="7" selected>أسبوع</option>
+                        <option value="30">شهر</option>
+                        <option value="90">3 شهور</option>
+                        <option value="180">6 شهور</option>
+                        <option value="365">سنة</option>
+                    </select>
+                </div>
+                
+                <button id="generateBtn" class="btn primary">إنشاء كود التفعيل</button>
+                
+                <div id="resultContainer" class="result-container hidden">
+                    <h3>كود التفعيل:</h3>
+                    <div class="code-result">
+                        <span id="activationCode"></span>
+                        <button id="copyBtn" class="btn secondary">نسخ</button>
+                    </div>
+                    <div id="expiryInfo" class="expiry-info"></div>
+                </div>
+            </div>
+            
+            <!-- قسم لوحة التحكم -->
+            <div id="adminSection" class="main-section">
+                <div id="loginSection" class="login-section">
+                    <div class="input-group">
+                        <label for="adminKey">كلمة مرور المسؤول:</label>
+                        <input type="password" id="adminKey" placeholder="أدخل كلمة المرور..." autocomplete="off">
+                        <button id="loginBtn" class="btn primary">تسجيل الدخول</button>
+                    </div>
+                </div>
+                
+                <div id="dashboardSection" class="dashboard-section">
+                    <div class="admin-tabs">
+                        <div class="tab active" data-tab="codes">قائمة الأكواد</div>
+                        <div class="tab" data-tab="logs">سجل النشاط</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="codesTab">
+                        <input type="text" class="code-search" id="codeSearch" placeholder="ابحث عن كود أو معرف جهاز...">
+                        
+                        <div class="table-responsive">
+                            <table id="codesTable">
+                                <thead>
+                                    <tr>
+                                        <th>الكود</th>
+                                        <th>معرف الجهاز</th>
+                                        <th>تاريخ الإنشاء</th>
+                                        <th>تاريخ الانتهاء</th>
+                                        <th>الحالة</th>
+                                        <th>آخر استخدام</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم تعبئة البيانات هنا من خلال JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="logsTab">
+                        <div id="logsContainer">
+                            <!-- سيتم تعبئة السجلات هنا من خلال JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // العناصر المشتركة
+            const mainTabs = document.querySelectorAll('.main-tab');
+            const mainSections = document.querySelectorAll('.main-section');
+            
+            // عناصر لوحة التحكم
+            const loginSection = document.getElementById('loginSection');
+            const dashboardSection = document.getElementById('dashboardSection');
+            const loginBtn = document.getElementById('loginBtn');
+            const adminKeyInput = document.getElementById('adminKey');
+            const codeSearch = document.getElementById('codeSearch');
+            const codesTable = document.getElementById('codesTable').querySelector('tbody');
+            const logsContainer = document.getElementById('logsContainer');
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // المفتاح الافتراضي للمسؤول (يمكن تغييره)
+            const DEFAULT_ADMIN_KEY = 'admin_secret_key_123';
+            
+            // عنوان السيرفر (قم بتغييره للخادم الفعلي)
+            const SERVER_URL = 'server/index.php';
+            
+            // التبديل بين التبويبات الرئيسية (المولد ولوحة التحكم)
+            mainTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const sectionId = this.getAttribute('data-section');
+                    
+                    // تنشيط التبويب
+                    mainTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // تنشيط القسم
+                    mainSections.forEach(section => section.classList.remove('active'));
+                    document.getElementById(sectionId + 'Section').classList.add('active');
+                    
+                    // إذا كان القسم هو لوحة التحكم والمستخدم مسجل الدخول بالفعل، تحديث البيانات
+                    if (sectionId === 'admin' && dashboardSection.style.display === 'block') {
+                        loadCodes();
+                    }
+                });
+            });
+            
+            // تسجيل الدخول
+            loginBtn.addEventListener('click', function() {
+                const adminKey = adminKeyInput.value.trim();
+                
+                if (adminKey === DEFAULT_ADMIN_KEY) {
+                    loginSection.style.display = 'none';
+                    dashboardSection.style.display = 'block';
+                    loadCodes();
+                } else {
+                    alert('كلمة المرور غير صحيحة!');
+                }
+            });
+            
+            // التبديل بين تبويبات لوحة التحكم
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // تنشيط التبويب
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // تنشيط المحتوى
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(tabId + 'Tab').classList.add('active');
+                    
+                    // تحميل البيانات المناسبة
+                    if (tabId === 'logs') {
+                        loadLogs();
+                    } else if (tabId === 'codes') {
+                        loadCodes();
+                    }
+                });
+            });
+            
+            // تحميل قائمة الأكواد
+            function loadCodes() {
+                const formData = new FormData();
+                formData.append('admin_key', DEFAULT_ADMIN_KEY);
+                
+                fetch(`${SERVER_URL}?action=list_codes`, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        displayCodes(data.codes);
+                    } else {
+                        alert(data.message || 'حدث خطأ في تحميل البيانات');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ في الاتصال بالخادم');
+                });
+            }
+            
+            // عرض الأكواد في الجدول
+            function displayCodes(codes) {
+                codesTable.innerHTML = '';
+                
+                if (Object.keys(codes).length === 0) {
+                    codesTable.innerHTML = '<tr><td colspan="7" style="text-align: center;">لا توجد أكواد مسجلة</td></tr>';
+                    return;
+                }
+                
+                const searchTerm = codeSearch.value.toLowerCase();
+                
+                Object.keys(codes).forEach(code => {
+                    const codeData = codes[code];
+                    
+                    // تطبيق البحث
+                    if (searchTerm && !code.toLowerCase().includes(searchTerm) && 
+                        !codeData.device_id.toLowerCase().includes(searchTerm)) {
+                        return;
+                    }
+                    
+                    const row = document.createElement('tr');
+                    
+                    // تنسيق التواريخ
+                    const createdDate = new Date(codeData.created * 1000).toLocaleString('ar-SA');
+                    const expiryDate = new Date(codeData.expiry * 1000).toLocaleString('ar-SA');
+                    let lastUsedDate = codeData.last_used ? 
+                        new Date(codeData.last_used * 1000).toLocaleString('ar-SA') : 
+                        'لم يستخدم بعد';
+                    
+                    // تحديد لون الحالة
+                    const statusClass = codeData.status === 'active' ? 'status-active' : 'status-revoked';
+                    const statusText = codeData.status === 'active' ? 'نشط' : 'ملغي';
+                    
+                    row.innerHTML = `
+                        <td>${code}</td>
+                        <td>${codeData.device_id}</td>
+                        <td>${createdDate}</td>
+                        <td>${expiryDate}</td>
+                        <td class="${statusClass}">${statusText}</td>
+                        <td>${lastUsedDate}</td>
+                        <td>
+                            ${codeData.status === 'active' ? 
+                                `<button class="action-btn revoke-btn" data-code="${code}">إلغاء</button>` : 
+                                '<span class="status-revoked">تم الإلغاء</span>'}
+                        </td>
+                    `;
+                    
+                    codesTable.appendChild(row);
+                });
+                
+                // إضافة مستمعي الأحداث لأزرار الإلغاء
+                document.querySelectorAll('.revoke-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const code = this.getAttribute('data-code');
+                        revokeCode(code);
+                    });
+                });
+            }
+            
+            // إلغاء كود
+            function revokeCode(code) {
+                if (confirm(`هل أنت متأكد من إلغاء الكود: ${code}؟`)) {
+                    const formData = new FormData();
+                    formData.append('admin_key', DEFAULT_ADMIN_KEY);
+                    formData.append('code', code);
+                    
+                    fetch(`${SERVER_URL}?action=revoke`, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert('تم إلغاء الكود بنجاح');
+                            loadCodes();
+                        } else {
+                            alert(data.message || 'حدث خطأ في إلغاء الكود');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('حدث خطأ في الاتصال بالخادم');
+                    });
+                }
+            }
+            
+            // تحميل سجلات النشاط
+            function loadLogs() {
+                const formData = new FormData();
+                formData.append('admin_key', DEFAULT_ADMIN_KEY);
+                
+                fetch(`${SERVER_URL}?action=get_logs`, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        displayLogs(data.logs);
+                    } else {
+                        alert(data.message || 'حدث خطأ في تحميل السجلات');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ في الاتصال بالخادم');
+                });
+            }
+            
+            // عرض سجلات النشاط
+            function displayLogs(logs) {
+                logsContainer.innerHTML = '';
+                
+                if (logs.length === 0) {
+                    logsContainer.innerHTML = '<p style="text-align: center;">لا توجد سجلات نشاط</p>';
+                    return;
+                }
+                
+                // ترتيب السجلات من الأحدث للأقدم
+                logs.sort((a, b) => b.timestamp - a.timestamp);
+                
+                logs.forEach(log => {
+                    const logDiv = document.createElement('div');
+                    const logDate = new Date(log.timestamp * 1000).toLocaleString('ar-SA');
+                    
+                    // تحديد نوع السجل
+                    let logClass = 'log-entry';
+                    if (log.action.includes('success')) {
+                        logClass += ' success';
+                    } else if (log.action.includes('failed')) {
+                        logClass += ' error';
+                    } else {
+                        logClass += ' action';
+                    }
+                    
+                    // تنسيق نص الإجراء
+                    let actionText;
+                    switch (log.action) {
+                        case 'generate':
+                            actionText = 'تم إنشاء كود جديد';
+                            break;
+                        case 'verify_success':
+                            actionText = 'تم التحقق من الكود بنجاح';
+                            break;
+                        case 'verify_failed_revoked':
+                            actionText = 'فشل التحقق - الكود ملغي';
+                            break;
+                        case 'verify_failed_expired':
+                            actionText = 'فشل التحقق - الكود منتهي';
+                            break;
+                        case 'verify_failed_invalid':
+                            actionText = 'فشل التحقق - الكود غير صالح';
+                            break;
+                        case 'revoke':
+                            actionText = 'تم إلغاء الكود';
+                            break;
+                        default:
+                            actionText = log.action;
+                    }
+                    
+                    logDiv.className = logClass;
+                    logDiv.innerHTML = `
+                        <div class="log-time">${logDate}</div>
+                        <div class="log-device">الجهاز: ${log.device_id}</div>
+                        <div>الكود: ${log.code}</div>
+                        <div class="log-action">الإجراء: ${actionText}</div>
+                        <div>عنوان IP: ${log.ip}</div>
+                    `;
+                    
+                    logsContainer.appendChild(logDiv);
+                });
+            }
+            
+            // البحث في الأكواد
+            codeSearch.addEventListener('keyup', function() {
+                loadCodes();
+            });
+        });
+    </script>
+</body>
+</html> 

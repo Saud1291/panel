@@ -1,0 +1,105 @@
+{
+    "codes": {
+        "MWDf58200sxi3vx": {
+            "device_id": "d3606ceac6432053",
+            "created": 1748720301,
+            "expiry": 1749325101,
+            "status": "revoked"
+        },
+        "MWDf58200sxi3w6": {
+            "device_id": "d3606ceac6432053",
+            "created": 1748720310,
+            "expiry": 1749325110,
+            "status": "revoked"
+        },
+        "MWDf58200sxi3w7": {
+            "device_id": "d3606ceac6432053",
+            "created": 1748720311,
+            "expiry": 1749325111,
+            "status": "active"
+        },
+        "MWDf58200sxi3w8": {
+            "device_id": "d3606ceac6432053",
+            "created": 1748720312,
+            "expiry": 1749325112,
+            "status": "active"
+        },
+        "MWDf58200sxi3w9": {
+            "device_id": "d3606ceac6432053",
+            "created": 1748720312,
+            "expiry": 1749325112,
+            "status": "active"
+        },
+        "MWDf58200sx762g": {
+            "device_id": "d3606ceac6432053",
+            "created": 1748728311,
+            "expiry": 1748814711,
+            "status": "active"
+        }
+    },
+    "logs": [
+        {
+            "timestamp": 1748720301,
+            "device_id": "d3606ceac6432053",
+            "code": "MWDf58200sxi3vx",
+            "action": "generate",
+            "ip": "82.167.211.86"
+        },
+        {
+            "timestamp": 1748720310,
+            "device_id": "d3606ceac6432053",
+            "code": "MWDf58200sxi3w6",
+            "action": "generate",
+            "ip": "82.167.211.86"
+        },
+        {
+            "timestamp": 1748720311,
+            "device_id": "d3606ceac6432053",
+            "code": "MWDf58200sxi3w7",
+            "action": "generate",
+            "ip": "82.167.211.86"
+        },
+        {
+            "timestamp": 1748720311,
+            "device_id": "d3606ceac6432053",
+            "code": "MWDf58200sxi3w8",
+            "action": "generate",
+            "ip": "82.167.211.86"
+        },
+        {
+            "timestamp": 1748720312,
+            "device_id": "d3606ceac6432053",
+            "code": "MWDf58200sxi3w8",
+            "action": "generate",
+            "ip": "82.167.211.86"
+        },
+        {
+            "timestamp": 1748720312,
+            "device_id": "d3606ceac6432053",
+            "code": "MWDf58200sxi3w9",
+            "action": "generate",
+            "ip": "82.167.211.86"
+        },
+        {
+            "timestamp": 1748720369,
+            "device_id": "d3606ceac6432053",
+            "code": "MWDf58200sxi3vx",
+            "action": "revoke",
+            "ip": "82.167.211.86"
+        },
+        {
+            "timestamp": 1748723255,
+            "device_id": "d3606ceac6432053",
+            "code": "MWDf58200sxi3w6",
+            "action": "revoke",
+            "ip": "82.167.211.86"
+        },
+        {
+            "timestamp": 1748728311,
+            "device_id": "d3606ceac6432053",
+            "code": "MWDf58200sx762g",
+            "action": "generate",
+            "ip": "82.167.211.86"
+        }
+    ]
+}
